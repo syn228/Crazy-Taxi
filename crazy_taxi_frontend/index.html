@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+    #wrap:after {
+      display: block;
+      height: 100%;
+      clear: both;
+      float: none;
+    }
+    #wrap div {
+      float: left;
+      height: 600px;
+      word-break: break-all;
+      z-index: -1;
+      position:relative;
+    }
+    #one {
+      width: 38%;
+      background-color: tan;
+    }
+    #two {
+      width: 24%;
+      background-color: grey;
+    }
+    #three {
+      width: 38%;
+      background-color: tan;
+    }
+    #user-car{
+      position:absolute;
+      transform: rotate(270deg);
+      height: 10%;
+      left: 95px;
+      bottom:50px;
+      height:auto;
+      max-width: 40%
+    }
+    #left-tree{
+      position:absolute;
+      left:350px;
+
+      height: auto;
+      max-width:20%
+    }
+    #right-tree{
+      position:absolute;
+      right:350px;
+
+      height: auto;
+      max-width:20%
+    }
+    .road-marking{
+      position:absolute;
+      left: -75px;
+
+
+    }
+    </style>
+  </head>
+  <body>
+<div id="container">
+  <ul id="option-select">
+    <p id="play-button" style="position: absolute; top: 70px; border: 2px solid black ;border-radius: 5px; padding: 2px"> Play </p>
+    <p id="high-score-button" style="position: absolute; top: 100px; border: 2px solid black ;border-radius: 5px; padding: 2px"> High Score </p>
+  </ul>
+
+
+
+  <div id="wrap">
+      <div id="one">
+        <img id="left-tree"src="https://i.pinimg.com/originals/97/5d/9f/975d9fba0cb1fdc2230e6cded0d26e57.png" alt="Tree" style="top: 150px;">
+      </div>
+      <div id="two">
+        <img id="user-car" src="http://www.clker.com/cliparts/X/z/O/k/S/k/orange-car-top-view-hi.png" alt="user-car">
+        <img id="road-marking 1" class="road-marking" src="https://i.imgur.com/Ygk5sQJ.png" style="top: -20px;">
+        <img id="road-marking 2" class="road-marking" src="https://i.imgur.com/Ygk5sQJ.png" style="top: 130px;">
+        <img id="road-marking 3" class="road-marking" src="https://i.imgur.com/Ygk5sQJ.png" style="top: 280px;">
+        <img id="road-marking 4" class="road-marking" src="https://i.imgur.com/Ygk5sQJ.png" style="top: 430px;">
+      </div>
+      <div id="three">
+        <img id="right-tree"src="https://i.pinimg.com/originals/97/5d/9f/975d9fba0cb1fdc2230e6cded0d26e57.png" alt="Tree" style="top: 450px;">
+      </div>
+    </div> <!-- end of wrap div -->
+
+
+
+
+
+</div>
+  </body>
+  <script src="index.js">
+
+  </script>
+</html>
