@@ -15,15 +15,18 @@ document.addEventListener("DOMContentLoaded", function(event){
   const roadMarking4 = document.getElementById('road-marking 4')
   const obstacleCar1 = document.getElementById("obstacle-car-1")
   const obstacleCar2 = document.getElementById("obstacle-car-2")
+  const roadDiv = document.getElementById("two")
+  const gameover = document.createElement("h1")
+  gameover.innerText = "Game Over"
+  gameover.style= "color: red; position:absolute; z-index:0; left:80px; top:200px"
 
 
   playButton.addEventListener("click", function moveDown() {
     playButton.innerText = "Quit"
+    playButton.disabled = true;
     highScore.remove()
 
-    var userCoordinate = userCar.getBoundingClientRect();
-    var obstacle1Coordinate = obstacleCar1.getBoundingClientRect();
-    var obstacle2Coordinate = obstacleCar2.getBoundingClientRect();
+
 
 
 
@@ -41,6 +44,12 @@ document.addEventListener("DOMContentLoaded", function(event){
     const obstaclePaths = [-12, 98, 208]
     var rand1 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
     var rand2 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
+
+    // var userCoordinate = userCar.getBoundingClientRect();
+    // var obstacle1Coordinate = obstacleCar1.getBoundingClientRect();
+    // var obstacle2Coordinate = obstacleCar2.getBoundingClientRect();
+
+
      obstacleCar1.style.top = p + "px"
      obstacleCar2.style.top = q + "px"
      roadMarking0.style.top = o + "px";
@@ -60,7 +69,31 @@ document.addEventListener("DOMContentLoaded", function(event){
      p++
      q++
 
-     
+     var userCarTop = parseInt(userCar.style.top)
+     var obstacleCar1Top = parseInt(obstacleCar1.style.top)
+     var obstacleCar2Top = parseInt(obstacleCar2.style.top)
+     var userCarLeft = parseInt(userCar.style.left)
+     var obstacleCar1Left = parseInt(obstacleCar1.style.left)
+     var obstacleCar2Left = parseInt(obstacleCar2.style.left)
+
+
+
+
+     // console.log(obstacleCar1.style.top) // increasing by 1 each step
+     // console.log(userCar.style.bottom) // always 50
+     if ((userCarTop < (obstacleCar1Top + 120)) && ((userCarTop + 120) > obstacleCar1Top) && ((userCarLeft+3)===obstacleCar1Left)) {
+       roadDiv.appendChild(gameover)
+       return;
+
+
+     }
+     if ((userCarTop < (obstacleCar2Top + 120)) && ((userCarTop + 120) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
+       roadDiv.appendChild(gameover)
+       return;
+
+     }
+
+
      if (obstacleCar1.style.top === "610px" ){
        obstacleCar1.style.left = rand1+ "px"
        p = -200
@@ -100,6 +133,10 @@ document.addEventListener("DOMContentLoaded", function(event){
   step();
 
   window.addEventListener("keyup", function(event){
+    var userCoordinate = userCar.getBoundingClientRect();
+    var obstacle1Coordinate = obstacleCar1.getBoundingClientRect();
+    var obstacle2Coordinate = obstacleCar2.getBoundingClientRect();
+
     u = parseInt(userCar.style.left)
     if (event.keyCode === 37){
       if (u === -15){
@@ -108,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function(event){
       else
       {
         userCar.style.left = u - 110 + "px"
+
       }
     }
     if (event.keyCode === 39){
