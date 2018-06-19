@@ -15,20 +15,45 @@ document.addEventListener("DOMContentLoaded", function(event){
   const roadMarking4 = document.getElementById('road-marking 4')
   const obstacleCar1 = document.getElementById("obstacle-car-1")
   const obstacleCar2 = document.getElementById("obstacle-car-2")
+  const leftDiv = document.getElementById("one")
   const roadDiv = document.getElementById("two")
+  const rightDiv = document.getElementById("three")
   const gameover = document.createElement("h1")
-  gameover.innerText = "Game Over"
-  gameover.style= "color: red; position:absolute; z-index:0; left:80px; top:200px"
+  const userForm = document.getElementById("user-form")
+  const userInput = document.getElementById("user-input")
+  gameover.innerText = "GAME OVER"
+  gameover.style= "color: red; position:absolute; z-index:0; left:60px; top:200px"
+  const counter = document.createElement("h1")
+  counter.style= "color:blue; position:absolute; left: 40px; border: 2px solid; padding:1px"
+  const finalScore = document.createElement("h1")
+  finalScore.style= "color: black; position:absolute; z-index:0; left:80px; top:250px"
 
+  playButton.disabled = true;
+  userForm.addEventListener("submit", function (event) {
+    event.preventDefault()
+    playButton.disabled = false;
+
+    const body = {username: userInput.value}
+
+    let config =  {
+      method:'POST',
+      headers:{
+          'Content-type':'application/json',
+          'Data-type':'application/json'
+              },
+      body:JSON.stringify(body)
+    }
+
+    fetch("http://localhost:3000/api/v1/users", config)
+  }) // end of userForm event listener
 
   playButton.addEventListener("click", function moveDown() {
     playButton.innerText = "Quit"
     playButton.disabled = true;
     highScore.remove()
-
-
-
-
+    userForm.remove()
+    leftDiv.appendChild(counter)
+    counter.innerText = 0
 
 
     let i = 150
@@ -41,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     let p = -200
     let q = -200
   function step() {
+    counter.innerText++
     const obstaclePaths = [-12, 98, 208]
     var rand1 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
     var rand2 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
@@ -83,12 +109,18 @@ document.addEventListener("DOMContentLoaded", function(event){
      // console.log(userCar.style.bottom) // always 50
      if ((userCarTop < (obstacleCar1Top + 120)) && ((userCarTop + 120) > obstacleCar1Top) && ((userCarLeft+3)===obstacleCar1Left)) {
        roadDiv.appendChild(gameover)
+       finalScore.innerText = `Score: ${counter.innerText}`
+       roadDiv.appendChild(finalScore)
+       // save user score
        return;
 
 
      }
      if ((userCarTop < (obstacleCar2Top + 120)) && ((userCarTop + 120) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
        roadDiv.appendChild(gameover)
+       finalScore.innerText = `Score: ${counter.innerText}`
+       roadDiv.appendChild(finalScore)
+       // save user score
        return;
 
      }
@@ -163,13 +195,13 @@ document.addEventListener("DOMContentLoaded", function(event){
     // add collision element
   }) // end of event listener for user left/right keys
 
+  window.addEventListener("keydown", function(e) {
+  // space and arrow keys
+  if([ 38, 40].indexOf(e.keyCode) > -1) {
+      e.preventDefault();
+  }
+  }, false);
 })  // end of playButton Event Listener
-
-
-
-
-
-
 
 
 
