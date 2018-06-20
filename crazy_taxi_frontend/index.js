@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   const obstacleCar1 = document.getElementById("obstacle-car-1")
   const obstacleCar2 = document.getElementById("obstacle-car-2")
   const obstacleCar3 = document.getElementById("obstacle-car-3")
+  const obstacleCar4 = document.getElementById("obstacle-car-4")
   const leftDiv = document.getElementById("one")
   const roadDiv = document.getElementById("two")
   const rightDiv = document.getElementById("three")
@@ -52,6 +53,9 @@ document.addEventListener("DOMContentLoaded", function(event){
     fetch("http://localhost:3000/api/v1/users", config)
   }) // end of userForm event listener
 
+
+
+// HIGH SCORE EVENT LISTENER STARTS HERE
   highScore.addEventListener("click", function(event){
     fetch("http://localhost:3000/api/v1/games").then(r=>r.json()).then(findHighScores)
 
@@ -77,9 +81,11 @@ document.addEventListener("DOMContentLoaded", function(event){
   }) //end of highScore event listener
 
 
-
+// THE ENTIRE GAME  STARTS HERE
   playButton.addEventListener("click", function moveDown() {
-
+    userCar.style.left = 95 + "px"
+    gameover.remove()
+    finalScore.remove()
 
     function getUserIds(userObjs){
       const userObj = userObjs.find(e => e.username === userInput.value)
@@ -105,12 +111,14 @@ document.addEventListener("DOMContentLoaded", function(event){
     let p = 0
     let q = -400
     let r = -800
+    let s = -1200
   function step() {
-    counter.innerText = parseInt(counter.innerText) + 2
+    counter.innerText = parseInt(counter.innerText) + 3
     const obstaclePaths = [-12, 98, 208]
     var rand1 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
     var rand2 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
     var rand3 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
+    var rand4 = obstaclePaths[Math.floor(Math.random() * obstaclePaths.length)];
 
     var backgroundIncrementValue, obstacleIncrementValue;
 
@@ -130,6 +138,26 @@ document.addEventListener("DOMContentLoaded", function(event){
       var backgroundIncrementValue = 10
       var obstacleIncrementValue = 5
     }
+    else if (counter.innerText >= 6000 && counter.innerText < 7500){
+      var backgroundIncrementValue = 12
+      var obstacleIncrementValue = 6
+    }
+    else if (counter.innerText >= 7500 && counter.innerText < 9000){
+      var backgroundIncrementValue = 14
+      var obstacleIncrementValue = 7
+    }
+    else if (counter.innerText >= 9000 && counter.innerText < 10000){
+      var backgroundIncrementValue = 16
+      var obstacleIncrementValue = 8
+    }
+    else if (counter.innerText >= 10000 && counter.innerText < 13000){
+      var backgroundIncrementValue = 18
+      var obstacleIncrementValue = 9
+    }
+    else if (counter.innerText >= 13000){
+      var backgroundIncrementValue = 20
+      var obstacleIncrementValue = 10
+    }
 
 
 
@@ -137,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function(event){
      obstacleCar1.style.top = p + "px"
      obstacleCar2.style.top = q + "px"
      obstacleCar3.style.top = r + "px"
+     obstacleCar4.style.top = s + "px"
      roadMarking0.style.top = o + "px";
      roadMarking1.style.top = k + "px";
      roadMarking2.style.top = l + "px";
@@ -154,18 +183,24 @@ document.addEventListener("DOMContentLoaded", function(event){
      p+= obstacleIncrementValue
      q+= obstacleIncrementValue
      r+= obstacleIncrementValue
+     s+= obstacleIncrementValue
+
 
      var userCarTop = parseInt(userCar.style.top)
      var obstacleCar1Top = parseInt(obstacleCar1.style.top)
      var obstacleCar2Top = parseInt(obstacleCar2.style.top)
      var obstacleCar3Top = parseInt(obstacleCar3.style.top)
+     var obstacleCar4Top = parseInt(obstacleCar4.style.top)
      var userCarLeft = parseInt(userCar.style.left)
      var obstacleCar1Left = parseInt(obstacleCar1.style.left)
      var obstacleCar2Left = parseInt(obstacleCar2.style.left)
      var obstacleCar3Left = parseInt(obstacleCar3.style.left)
+     var obstacleCar4Left = parseInt(obstacleCar4.style.left)
 
      function gameOver(){
      fetch(`http://localhost:3000/api/v1/users`).then(r => r.json()).then(getUserIds).then(postGame)
+     playButton.innerText = "Retry"
+     playButton.disabled = false
      function postGame(userId){
        const finalScore = parseInt(counter.innerText)
        const body = {username: userInput.value, user_id: userId, score: finalScore}
@@ -193,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 
      }
-     if ((userCarTop < (obstacleCar2Top + 120)) && ((userCarTop + 120) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
+     if ((userCarTop < (obstacleCar2Top + 110)) && ((userCarTop + 110) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
        roadDiv.appendChild(gameover)
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
@@ -201,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function(event){
        return;
 
      }
-     if ((userCarTop < (obstacleCar3Top + 120)) && ((userCarTop + 120) > obstacleCar3Top) && ((userCarLeft+3)===obstacleCar3Left)) {
+     if ((userCarTop < (obstacleCar3Top + 110)) && ((userCarTop + 110) > obstacleCar3Top) && ((userCarLeft+3)===obstacleCar3Left)) {
        roadDiv.appendChild(gameover)
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
@@ -209,19 +244,31 @@ document.addEventListener("DOMContentLoaded", function(event){
        return;
 
      }
+     if ((userCarTop < (obstacleCar4Top + 110)) && ((userCarTop + 110) > obstacleCar4Top) && ((userCarLeft+3)===obstacleCar4Left)) {
+       roadDiv.appendChild(gameover)
+       finalScore.innerText = `Score: ${counter.innerText}`
+       roadDiv.appendChild(finalScore)
+       gameOver();
+       return;
 
+
+     }
 
      if (obstacleCar1Top >= 800 ){
        obstacleCar1.style.left = rand1+ "px"
-       p = -200
+       p = -400
      }
      if (obstacleCar2Top >= 800){
        obstacleCar2.style.left = rand2+ "px"
-       q = -200
+       q = -400
      }
      if (obstacleCar3Top >= 800){
        obstacleCar3.style.left = rand3+ "px"
-       r = -200
+       r = -400
+     }
+     if (obstacleCar4Top >= 800 ){
+       obstacleCar4.style.left = rand4+ "px"
+       s = -400
      }
 
      if (parseInt(leftTree.style.top) >= 600){
@@ -245,42 +292,9 @@ document.addEventListener("DOMContentLoaded", function(event){
      if (parseInt(roadMarking4.style.top) >= 600){
        n = -150
      }
-
-
      setTimeout(step, 10)
-
-
   }
   step();
-
-  window.addEventListener("keyup", function(event){
-
-
-    u = parseInt(userCar.style.left)
-    if (event.keyCode === 37){
-      if (u === -15){
-        console.log("nope!")
-      }
-      else
-      {
-        userCar.style.left = u - 110 + "px"
-
-      }
-    }
-    if (event.keyCode === 39){
-      if (u === 205){
-        console.log("nope!")
-      }
-      else
-      {
-      userCar.style.left = u + 110 + "px"
-      }
-    }
-
-
-    // add car obstacles
-    // add collision element
-  }) // end of event listener for user left/right keys
 
   window.addEventListener("keydown", function(e) {
   // space and arrow keys
@@ -290,15 +304,31 @@ document.addEventListener("DOMContentLoaded", function(event){
   }, false);
 })  // end of playButton Event Listener
 
-
-
-  playButton.addEventListener("click", function(event){
-    //somehow start the game
-
-
-  }) // end of playButton Event Listener
-
-
+  window.addEventListener("keyup", function(event){
+    u = parseInt(userCar.style.left)
+    if (event.keyCode === 37){
+      if (u === 95){
+        userCar.style.left = -15 + "px"
+      }
+      else if (u === -15){
+        console.log("nope!")
+      }
+      else if (u === 205){
+        userCar.style.left = 95 + "px"
+      }
+    }
+    else if (event.keyCode === 39){
+      if  (u === -15){
+        userCar.style.left = 95 + "px"
+      }
+      else if (u === 95){
+        userCar.style.left = 205 + "px"
+      }
+      else if (u === 205){
+        console.log("nope!")
+      }
+    }
+  })    // end of event listener for user left/right keys
 
 
 
