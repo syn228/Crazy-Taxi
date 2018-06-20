@@ -12,11 +12,12 @@ document.addEventListener("DOMContentLoaded", function(event){
   const leftTree = document.getElementById('left-tree')
   const rightTree = document.getElementById('right-tree')
   const userCar = document.getElementById('user-car')
+  const exitSign = document.getElementById('exit-sign')
   const roadMarking0 = document.getElementById('road-marking 0')
   const roadMarking1 = document.getElementById('road-marking 1')
   const roadMarking2 = document.getElementById('road-marking 2')
   const roadMarking3 = document.getElementById('road-marking 3')
-  const roadMarking4 = document.getElementById('road-marking 4')
+  // const roadMarking4 = document.getElementById('road-marking 4')
   const obstacleCar1 = document.getElementById("obstacle-car-1")
   const obstacleCar2 = document.getElementById("obstacle-car-2")
   const obstacleCar3 = document.getElementById("obstacle-car-3")
@@ -69,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function(event){
       highScoreChart.appendChild(highScoreHeading)
 
       for (i=0; i < top5Objs.length; i++){
-        const topScoreHTML = `<p style="text-align:center; color:magenta" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
+        const topScoreHTML = `<p style="text-align:center; color:#ffff33" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
         highScoreChart.innerHTML += topScoreHTML
       } // end of for loop
 
@@ -83,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 // THE ENTIRE GAME  STARTS HERE
   playButton.addEventListener("click", function moveDown() {
+    userCar.src="http://www.clker.com/cliparts/X/z/O/k/S/k/orange-car-top-view-hi.png"
     userCar.style.left = 95 + "px"
     gameover.remove()
     finalScore.remove()
@@ -100,14 +102,14 @@ document.addEventListener("DOMContentLoaded", function(event){
     leftDiv.appendChild(counter)
     counter.innerText = 0
 
-
+    let h = 100
     let i = 150
     let j = 150
-    let k = -20
-    let l = 130
-    let m = 280
+    let k = 0
+    let l = 200
+    let m = 400
     let n = 430
-    let o = -170
+    let o = -200
     let p = 0
     let q = -400
     let r = -800
@@ -154,10 +156,15 @@ document.addEventListener("DOMContentLoaded", function(event){
       var backgroundIncrementValue = 18
       var obstacleIncrementValue = 9
     }
-    else if (counter.innerText >= 13000){
+    else if (counter.innerText >= 13000 && counter.innerText < 15000){
       var backgroundIncrementValue = 20
       var obstacleIncrementValue = 10
     }
+    else if (counter.innerText >= 15000){
+      var backgroundIncrementValue = 22
+      var obstacleIncrementValue = 11
+    }
+
 
 
 
@@ -170,9 +177,11 @@ document.addEventListener("DOMContentLoaded", function(event){
      roadMarking1.style.top = k + "px";
      roadMarking2.style.top = l + "px";
      roadMarking3.style.top = m + "px";
-     roadMarking4.style.top = n + "px";
+     // roadMarking4.style.top = n + "px";
      leftTree.style.top = i + "px";
+     exitSign.style.top = h + "px";
      rightTree.style.top = 300 + j + "px";
+     h+= backgroundIncrementValue
      i+= backgroundIncrementValue
      j+= backgroundIncrementValue
      k+= backgroundIncrementValue
@@ -224,6 +233,11 @@ document.addEventListener("DOMContentLoaded", function(event){
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
        gameOver();
+       userCar.src = `./assets/explosion.gif`
+       function removeCar(){
+         setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
+       }
+       removeCar();
        return;
 
 
@@ -233,6 +247,11 @@ document.addEventListener("DOMContentLoaded", function(event){
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
        gameOver();
+       userCar.src = `./assets/explosion.gif`
+       function removeCar(){
+         setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
+       }
+       removeCar();
        return;
 
      }
@@ -241,6 +260,11 @@ document.addEventListener("DOMContentLoaded", function(event){
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
        gameOver();
+       userCar.src = `./assets/explosion.gif`
+       function removeCar(){
+         setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
+       }
+       removeCar();
        return;
 
      }
@@ -249,6 +273,11 @@ document.addEventListener("DOMContentLoaded", function(event){
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
        gameOver();
+       userCar.src = `./assets/explosion.gif`
+       function removeCar(){
+         setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
+       }
+       removeCar();
        return;
 
 
@@ -271,6 +300,9 @@ document.addEventListener("DOMContentLoaded", function(event){
        s = -400
      }
 
+     if (parseInt(exitSign.style.top) >= 600){
+       h = -5000
+     }
      if (parseInt(leftTree.style.top) >= 600){
        i = -100
      }
@@ -278,20 +310,20 @@ document.addEventListener("DOMContentLoaded", function(event){
        j = -400
      }
      if (parseInt(roadMarking0.style.top) >= 600){
-       o = -150
+       o = -200
      }
      if (parseInt(roadMarking1.style.top) >= 600){
-       k = -150
+       k = -200
      }
      if (parseInt(roadMarking2.style.top) >= 600){
-       l = -150
+       l = -200
      }
      if (parseInt(roadMarking3.style.top) >= 600){
-       m = -150
+       m = -200
      }
-     if (parseInt(roadMarking4.style.top) >= 600){
-       n = -150
-     }
+     // if (parseInt(roadMarking4.style.top) >= 600){
+     //   n = -150
+     // }
      setTimeout(step, 10)
   }
   step();
