@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   const highScoreHeading = document.createElement("H3")
   highScoreHeading.id = "high-score-heading"
   highScoreHeading.style = "color:midnightblue"
+  const submitInput = document.getElementById("submit-input")
   const playerOption = document.getElementById('option-select')
   const playButton = document.getElementById('play-button')
   const highScore = document.getElementById('high-score-button')
@@ -34,11 +35,37 @@ document.addEventListener("DOMContentLoaded", function(event){
   counter.style= "color:blue; position:absolute; left: 40px; border: 2px solid; padding:1px"
   const finalScore = document.createElement("h1")
   finalScore.style= "color: black; position:absolute; z-index:0; left:80px; top:250px"
+  const gameBackgroundMusic = document.createElement("audio")
+  gameBackgroundMusic.volume = .6
+  gameBackgroundMusic.src = "./assets/backgroundMusic.mp3"
+  gameBackgroundMusic.setAttribute("preload", "auto");
+  gameBackgroundMusic.setAttribute("controls", "none");
+  gameBackgroundMusic.style.display = "none";
+  const explosionSound = document.createElement("audio")
+  explosionSound.src = "./assets/explosionSound.mp3"
+  explosionSound.setAttribute("preload", "auto");
+  explosionSound.setAttribute("controls", "none");
+  explosionSound.style.display = "none";
+  const carStart = document.createElement("audio")
+  carStart.src = "./assets/carStart.mp3"
+  carStart.setAttribute("preload", "auto");
+  carStart.setAttribute("controls", "none");
+  carStart.style.display = "none";
+  const buttonSound = document.createElement("audio")
+  buttonSound.volume = .3
+  buttonSound.src = "./assets/buttonSound.mp3"
+  buttonSound.setAttribute("preload", "auto");
+  buttonSound.setAttribute("controls", "none");
+  buttonSound.style.display = "none";
+
+
+
 
   playButton.disabled = true;
   userForm.addEventListener("submit", function (event) {
     event.preventDefault()
     playButton.disabled = false;
+    submitInput.disabled = "disabled"
 
     const body = {username: userInput.value}
 
@@ -58,8 +85,16 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 // HIGH SCORE EVENT LISTENER STARTS HERE
   highScore.addEventListener("click", function(event){
+
+    if (highScoreHeading.innerHTML === ""){
+
+
+
+
+    buttonSound.play()
     fetch("http://localhost:3000/api/v1/games").then(r=>r.json()).then(findHighScores)
 
+    console.log(highScoreHeading.innerHTML)
     function findHighScores(gameObjs){
 
       const sortedObjs = gameObjs.sort(function(gameObj1, gameObj2) {return gameObj2.score-gameObj1.score})
@@ -72,18 +107,23 @@ document.addEventListener("DOMContentLoaded", function(event){
       for (i=0; i < top5Objs.length; i++){
         const topScoreHTML = `<p style="text-align:center; color:#ffff33" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
         highScoreChart.innerHTML += topScoreHTML
-      } // end of for loop
+
+      }// end of for loop
 
 
 
     } // end of findHighScores function
 
-
+  } //end of if statement
   }) //end of highScore event listener
 
 
 // THE ENTIRE GAME  STARTS HERE
   playButton.addEventListener("click", function moveDown() {
+    buttonSound.play()
+    document.body.appendChild(gameBackgroundMusic)
+    carStart.play()
+    setTimeout(function startBG(){gameBackgroundMusic.play()}, 1500)
     userCar.src="http://www.clker.com/cliparts/X/z/O/k/S/k/orange-car-top-view-hi.png"
     userCar.style.left = 95 + "px"
     gameover.remove()
@@ -95,16 +135,17 @@ document.addEventListener("DOMContentLoaded", function(event){
     }
 
 
-    playButton.innerText = "Quit"
+
     playButton.disabled = true;
-    highScore.remove()
+
+
     userForm.remove()
     leftDiv.appendChild(counter)
     counter.innerText = 0
 
-    let h = 100
+    let h = -100
     let i = 150
-    let j = 150
+    let j = 400
     let k = 0
     let l = 200
     let m = 400
@@ -148,19 +189,19 @@ document.addEventListener("DOMContentLoaded", function(event){
       var backgroundIncrementValue = 14
       var obstacleIncrementValue = 7
     }
-    else if (counter.innerText >= 9000 && counter.innerText < 10000){
+    else if (counter.innerText >= 9000 && counter.innerText < 10500){
       var backgroundIncrementValue = 16
       var obstacleIncrementValue = 8
     }
-    else if (counter.innerText >= 10000 && counter.innerText < 13000){
+    else if (counter.innerText >= 10500 && counter.innerText < 12000){
       var backgroundIncrementValue = 18
       var obstacleIncrementValue = 9
     }
-    else if (counter.innerText >= 13000 && counter.innerText < 15000){
+    else if (counter.innerText >= 12000 && counter.innerText < 13500){
       var backgroundIncrementValue = 20
       var obstacleIncrementValue = 10
     }
-    else if (counter.innerText >= 15000){
+    else if (counter.innerText >= 13500){
       var backgroundIncrementValue = 22
       var obstacleIncrementValue = 11
     }
@@ -180,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function(event){
      // roadMarking4.style.top = n + "px";
      leftTree.style.top = i + "px";
      exitSign.style.top = h + "px";
-     rightTree.style.top = 300 + j + "px";
+     rightTree.style.top = j + "px";
      h+= backgroundIncrementValue
      i+= backgroundIncrementValue
      j+= backgroundIncrementValue
@@ -238,6 +279,8 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       gameBackgroundMusic.pause()
+       explosionSound.play()
        return;
 
 
@@ -252,6 +295,8 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       gameBackgroundMusic.pause()
+       explosionSound.play()
        return;
 
      }
@@ -265,6 +310,8 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       gameBackgroundMusic.pause()
+       explosionSound.play()
        return;
 
      }
@@ -300,8 +347,8 @@ document.addEventListener("DOMContentLoaded", function(event){
        s = -400
      }
 
-     if (parseInt(exitSign.style.top) >= 600){
-       h = -5000
+     if (parseInt(exitSign.style.top) >= 2400){
+       h = -1600
      }
      if (parseInt(leftTree.style.top) >= 600){
        i = -100
@@ -341,17 +388,20 @@ document.addEventListener("DOMContentLoaded", function(event){
     if (event.keyCode === 37){
       if (u === 95){
         userCar.style.left = -15 + "px"
+
       }
       else if (u === -15){
         console.log("nope!")
       }
       else if (u === 205){
         userCar.style.left = 95 + "px"
+
       }
     }
     else if (event.keyCode === 39){
       if  (u === -15){
         userCar.style.left = 95 + "px"
+
       }
       else if (u === 95){
         userCar.style.left = 205 + "px"
