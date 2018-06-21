@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", function(event){
   const highScore = document.getElementById('high-score-button')
   const carTrack = document.getElementById('track')
   const leftTree = document.getElementById('left-tree')
+  const leftTree2 = document.getElementById('another-left-tree')
+  const theShrub = document.getElementById('shrub1')
+  const theShrub2 = document.getElementById('shrub2')
   const rightTree = document.getElementById('right-tree')
   const userCar = document.getElementById('user-car')
   const exitSign = document.getElementById('exit-sign')
@@ -36,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   const finalScore = document.createElement("h1")
   finalScore.style= "color: black; position:absolute; z-index:0; left:80px; top:250px"
   const gameBackgroundMusic = document.createElement("audio")
-  gameBackgroundMusic.volume = .6
+  gameBackgroundMusic.volume = .3
   gameBackgroundMusic.src = "./assets/backgroundMusic.mp3"
   gameBackgroundMusic.setAttribute("preload", "auto");
   gameBackgroundMusic.setAttribute("controls", "none");
@@ -57,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   buttonSound.setAttribute("preload", "auto");
   buttonSound.setAttribute("controls", "none");
   buttonSound.style.display = "none";
+  const currentUser = document.createElement("P")
 
 
 
@@ -66,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     event.preventDefault()
     playButton.disabled = false;
     submitInput.disabled = "disabled"
+
 
     const body = {username: userInput.value}
 
@@ -79,6 +84,10 @@ document.addEventListener("DOMContentLoaded", function(event){
     }
 
     fetch("http://localhost:3000/api/v1/users", config)
+
+    currentUser.innerHTML = `<strong>Current User: ${userInput.value}</strong>`
+    currentUser.style = "position:absolute; top: 200px; left: 40px; color: midnightblue; border-style:solid;padding: 5px;"
+    leftDiv.prepend(currentUser)
   }) // end of userForm event listener
 
 
@@ -105,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function(event){
       highScoreChart.appendChild(highScoreHeading)
 
       for (i=0; i < top5Objs.length; i++){
-        const topScoreHTML = `<p style="text-align:center; color:#ffff33" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
+        const topScoreHTML = `<p style="text-align:center; color:magenta" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
         highScoreChart.innerHTML += topScoreHTML
 
       }// end of for loop
@@ -155,6 +164,9 @@ document.addEventListener("DOMContentLoaded", function(event){
     let q = -400
     let r = -800
     let s = -1200
+    let t = 360
+    let u = 450
+    let v = 0
   function step() {
     counter.innerText = parseInt(counter.innerText) + 3
     const obstaclePaths = [-12, 98, 208]
@@ -220,6 +232,9 @@ document.addEventListener("DOMContentLoaded", function(event){
      roadMarking3.style.top = m + "px";
      // roadMarking4.style.top = n + "px";
      leftTree.style.top = i + "px";
+     leftTree2.style.top = u + "px";
+     theShrub.style.top = t + "px";
+     theShrub2.style.top = v + "px";
      exitSign.style.top = h + "px";
      rightTree.style.top = j + "px";
      h+= backgroundIncrementValue
@@ -230,6 +245,9 @@ document.addEventListener("DOMContentLoaded", function(event){
      m+= backgroundIncrementValue
      n+= backgroundIncrementValue
      o+= backgroundIncrementValue
+     t+= backgroundIncrementValue
+     u+= backgroundIncrementValue
+     v+= backgroundIncrementValue
      p+= obstacleIncrementValue
      q+= obstacleIncrementValue
      r+= obstacleIncrementValue
@@ -249,7 +267,6 @@ document.addEventListener("DOMContentLoaded", function(event){
 
      function gameOver(){
      fetch(`http://localhost:3000/api/v1/users`).then(r => r.json()).then(getUserIds).then(postGame)
-     playButton.innerText = "Retry"
      playButton.disabled = false
      function postGame(userId){
        const finalScore = parseInt(counter.innerText)
@@ -279,8 +296,12 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       submitInput.disabled = false
        gameBackgroundMusic.pause()
+       gameBackgroundMusic.currentTime = 0
        explosionSound.play()
+       leftDiv.appendChild(userForm)
+
        return;
 
 
@@ -295,8 +316,11 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       submitInput.disabled = false
        gameBackgroundMusic.pause()
+       gameBackgroundMusic.currentTime = 0
        explosionSound.play()
+       leftDiv.appendChild(userForm)
        return;
 
      }
@@ -310,8 +334,11 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       submitInput.disabled = false
        gameBackgroundMusic.pause()
+       gameBackgroundMusic.currentTime = 0
        explosionSound.play()
+       leftDiv.appendChild(userForm)
        return;
 
      }
@@ -325,6 +352,11 @@ document.addEventListener("DOMContentLoaded", function(event){
          setTimeout(function(){userCar.src="https://raw.githubusercontent.com/diegocsandrim/sharp-test/master/output1.png"}, 1200)
        }
        removeCar();
+       submitInput.disabled = false
+       gameBackgroundMusic.pause()
+       gameBackgroundMusic.currentTime = 0
+       explosionSound.play()
+       leftDiv.appendChild(userForm)
        return;
 
 
@@ -352,6 +384,15 @@ document.addEventListener("DOMContentLoaded", function(event){
      }
      if (parseInt(leftTree.style.top) >= 600){
        i = -100
+     }
+     if (parseInt(leftTree2.style.top) >= 600){
+       u = -100
+     }
+     if (parseInt(theShrub.style.top) >= 600){
+       t = -100
+     }
+     if (parseInt(theShrub2.style.top) >= 600){
+       v = -100
      }
      if (parseInt(rightTree.style.top) >= 600){
        j = -400
@@ -388,14 +429,12 @@ document.addEventListener("DOMContentLoaded", function(event){
     if (event.keyCode === 37){
       if (u === 95){
         userCar.style.left = -15 + "px"
-
       }
       else if (u === -15){
         console.log("nope!")
       }
       else if (u === 205){
         userCar.style.left = 95 + "px"
-
       }
     }
     else if (event.keyCode === 39){
@@ -411,11 +450,6 @@ document.addEventListener("DOMContentLoaded", function(event){
       }
     }
   })    // end of event listener for user left/right keys
-
-
-
-
-
 
 
 }) // end of DOM Content Loaded
