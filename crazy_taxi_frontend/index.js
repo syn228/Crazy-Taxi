@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", function(event){
   counter.style= "color:blue; position:absolute; left: 40px; border: 2px solid; padding:1px"
   const finalScore = document.createElement("h1")
   finalScore.style= "color: black; position:absolute; z-index:0; left:80px; top:250px"
+  const newRecordText = document.createElement("span")
+  newRecordText.style= "color: cyan; position:absolute; z-index:0; left:65px; top:330px"
   const gameBackgroundMusic = document.createElement("audio")
   gameBackgroundMusic.volume = .3
   gameBackgroundMusic.src = "./assets/backgroundMusic.mp3"
@@ -61,8 +63,15 @@ document.addEventListener("DOMContentLoaded", function(event){
   buttonSound.setAttribute("controls", "none");
   buttonSound.style.display = "none";
   const currentUser = document.createElement("P")
-
-
+  const PBJBrian = document.createElement("IMG")
+  PBJBrian.style="position:absolute; height:auto; left: 190px; max-width:30%; top:100px; z-index:0"
+  PBJBrian.src = "https://static.gamespot.com/uploads/scale_super/1179/11799911/2454148-brianpbj.gif"
+  const mikeWazowski = document.createElement("IMG")
+  mikeWazowski.style="position:absolute; height:auto; left: 200px; max-width:30%; top:100px; z-index:0"
+  mikeWazowski.src = "https://i.imgur.com/OGeV1rZ.gif"
+  const spongeBob = document.createElement("IMG")
+  spongeBob.style="position:absolute; height:auto; left: 200px; max-width:30%; top:100px; z-index:0"
+  spongeBob.src = "https://vignette.wikia.nocookie.net/spongebob/images/d/d9/DooyDoo.gif/revision/latest?cb=20141223180449"
 
 
   playButton.disabled = true;
@@ -85,9 +94,33 @@ document.addEventListener("DOMContentLoaded", function(event){
 
     fetch("http://localhost:3000/api/v1/users", config)
 
-    currentUser.innerHTML = `<strong>Current User: ${userInput.value}</strong>`
-    currentUser.style = "position:absolute; top: 200px; left: 40px; color: midnightblue; border-style:solid;padding: 5px;"
-    leftDiv.prepend(currentUser)
+    fetch("http://localhost:3000/api/v1/users").then(r=>r.json()).then(findUserId).then(makeRequest)
+
+    function makeRequest(userObj) {
+      fetch("http://localhost:3000/api/v1/games").then(r=>r.json()).then(findUserHighScore)
+      function findUserHighScore(gameObjs) {
+        if (userObj !== undefined){
+        const foundUserObjs = gameObjs.filter(e => e.user_id === userObj.id)
+        const sortedUserScores = foundUserObjs.sort(function(obj1, obj2) {return obj2.score-obj1.score})
+        currentUser.innerHTML = `<strong>Current User: ${userInput.value}<p id="${userInput.value}-score"> User High Score: ${sortedUserScores[0].score}</p></strong>`
+        currentUser.id = `${userInput.value}`
+        currentUser.style = "position:absolute; top: 200px; left: 40px; color: midnightblue; border-style:solid;padding: 5px;"
+        leftDiv.prepend(currentUser)
+        }
+        else {
+          currentUser.innerHTML = `<strong>Current User: ${userInput.value}</strong>`
+          currentUser.style = "position:absolute; top: 200px; left: 40px; color: midnightblue; border-style:solid;padding: 5px;"
+          currentUser.id = `${userInput.value}`
+          leftDiv.prepend(currentUser)
+        }
+      }
+    }
+
+    function findUserId(userObjs){
+      return userId = userObjs.find(e => e.username === userInput.value)
+
+    }
+
   }) // end of userForm event listener
 
 
@@ -152,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function(event){
     leftDiv.appendChild(counter)
     counter.innerText = 0
 
+    let b = -100
     let h = -100
     let i = 150
     let j = 400
@@ -167,6 +201,8 @@ document.addEventListener("DOMContentLoaded", function(event){
     let t = 360
     let u = 450
     let v = 0
+    let w = -100
+    let sb = -100
   function step() {
     counter.innerText = parseInt(counter.innerText) + 3
     const obstaclePaths = [-12, 98, 208]
@@ -192,6 +228,9 @@ document.addEventListener("DOMContentLoaded", function(event){
     else if (counter.innerText >= 4500 && counter.innerText < 6000){
       var backgroundIncrementValue = 10
       var obstacleIncrementValue = 5
+      mikeWazowski.style.top = w + "px"
+      rightDiv.appendChild(mikeWazowski)
+      w += 5
     }
     else if (counter.innerText >= 6000 && counter.innerText < 7500){
       var backgroundIncrementValue = 12
@@ -200,6 +239,9 @@ document.addEventListener("DOMContentLoaded", function(event){
     else if (counter.innerText >= 7500 && counter.innerText < 9000){
       var backgroundIncrementValue = 14
       var obstacleIncrementValue = 7
+      spongeBob.style.top = sb + "px"
+      rightDiv.appendChild(spongeBob)
+      sb += 7
     }
     else if (counter.innerText >= 9000 && counter.innerText < 10500){
       var backgroundIncrementValue = 16
@@ -208,6 +250,9 @@ document.addEventListener("DOMContentLoaded", function(event){
     else if (counter.innerText >= 10500 && counter.innerText < 12000){
       var backgroundIncrementValue = 18
       var obstacleIncrementValue = 9
+      PBJBrian.style.top = b + "px"
+      rightDiv.appendChild(PBJBrian)
+      b += 9
     }
     else if (counter.innerText >= 12000 && counter.innerText < 13500){
       var backgroundIncrementValue = 20
@@ -220,8 +265,6 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 
 
-
-
      obstacleCar1.style.top = p + "px"
      obstacleCar2.style.top = q + "px"
      obstacleCar3.style.top = r + "px"
@@ -230,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function(event){
      roadMarking1.style.top = k + "px";
      roadMarking2.style.top = l + "px";
      roadMarking3.style.top = m + "px";
-     // roadMarking4.style.top = n + "px";
      leftTree.style.top = i + "px";
      leftTree2.style.top = u + "px";
      theShrub.style.top = t + "px";
@@ -288,8 +330,20 @@ document.addEventListener("DOMContentLoaded", function(event){
      // console.log(userCar.style.bottom) // always 50
      if ((userCarTop < (obstacleCar1Top + 120)) && ((userCarTop + 120) > obstacleCar1Top) && ((userCarLeft+3)===obstacleCar1Left)) {
        roadDiv.appendChild(gameover)
+       const userScoreString = document.getElementById(`${userInput.value}-score`)
+       const splitTag = userScoreString.innerText.split(":")
+       const userScore = parseInt(splitTag[1])
+       if (counter.innerText > userScore){
+         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+         newRecordText.innerText = "NEW PERSONAL RECORD"
+         roadDiv.appendChild(finalScore)
+         roadDiv.appendChild(newRecordText)
+         // userScoreString.innerText = `User High Score: ${userScore}`
+       }
+       else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       }
        gameOver();
        userCar.src = `./assets/explosion.gif`
        function removeCar(){
@@ -302,14 +356,26 @@ document.addEventListener("DOMContentLoaded", function(event){
        explosionSound.play()
        leftDiv.appendChild(userForm)
 
-       return;
 
+       return;
 
      }
      if ((userCarTop < (obstacleCar2Top + 110)) && ((userCarTop + 110) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
        roadDiv.appendChild(gameover)
+       const userScoreString = document.getElementById(`${userInput.value}-score`)
+       const splitTag = userScoreString.innerText.split(":")
+       const userScore = parseInt(splitTag[1])
+       if (counter.innerText > userScore){
+         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+         newRecordText.innerText = "NEW PERSONAL RECORD"
+         roadDiv.appendChild(finalScore)
+         roadDiv.appendChild(newRecordText)
+         // userScoreString.innerText = `User High Score: ${userScore}`
+       }
+       else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       }
        gameOver();
        userCar.src = `./assets/explosion.gif`
        function removeCar(){
@@ -321,13 +387,26 @@ document.addEventListener("DOMContentLoaded", function(event){
        gameBackgroundMusic.currentTime = 0
        explosionSound.play()
        leftDiv.appendChild(userForm)
+
        return;
 
      }
      if ((userCarTop < (obstacleCar3Top + 110)) && ((userCarTop + 110) > obstacleCar3Top) && ((userCarLeft+3)===obstacleCar3Left)) {
        roadDiv.appendChild(gameover)
+       const userScoreString = document.getElementById(`${userInput.value}-score`)
+       const splitTag = userScoreString.innerText.split(":")
+       const userScore = parseInt(splitTag[1])
+       if (counter.innerText > userScore){
+         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+         newRecordText.innerText = "NEW PERSONAL RECORD"
+         roadDiv.appendChild(finalScore)
+         roadDiv.appendChild(newRecordText)
+         // userScoreString.innerText = `User High Score: ${userScore}`
+       }
+       else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       }
        gameOver();
        userCar.src = `./assets/explosion.gif`
        function removeCar(){
@@ -339,13 +418,26 @@ document.addEventListener("DOMContentLoaded", function(event){
        gameBackgroundMusic.currentTime = 0
        explosionSound.play()
        leftDiv.appendChild(userForm)
+
        return;
 
      }
      if ((userCarTop < (obstacleCar4Top + 110)) && ((userCarTop + 110) > obstacleCar4Top) && ((userCarLeft+3)===obstacleCar4Left)) {
        roadDiv.appendChild(gameover)
+       const userScoreString = document.getElementById(`${userInput.value}-score`)
+       const splitTag = userScoreString.innerText.split(":")
+       const userScore = parseInt(splitTag[1])
+       if (counter.innerText > userScore){
+         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+         newRecordText.innerText = "NEW PERSONAL RECORD"
+         roadDiv.appendChild(finalScore)
+         roadDiv.appendChild(newRecordText)
+         // userScoreString.innerText = `User High Score: ${userScore}`
+       }
+       else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       }
        gameOver();
        userCar.src = `./assets/explosion.gif`
        function removeCar(){
@@ -357,6 +449,7 @@ document.addEventListener("DOMContentLoaded", function(event){
        gameBackgroundMusic.currentTime = 0
        explosionSound.play()
        leftDiv.appendChild(userForm)
+
        return;
 
 
@@ -424,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   }, false);
 })  // end of playButton Event Listener
 
-  window.addEventListener("keyup", function(event){
+  window.addEventListener("keydown", function(event){
     u = parseInt(userCar.style.left)
     if (event.keyCode === 37){
       if (u === 95){
