@@ -163,6 +163,9 @@ document.addEventListener("DOMContentLoaded", function(event){
 // THE ENTIRE GAME  STARTS HERE
   playButton.addEventListener("click", function moveDown() {
     newRecordText.innerText = ""
+    mikeWazowski.remove()
+    spongeBob.remove()
+    PBJBrian.remove()
     buttonSound.play()
     document.body.appendChild(gameBackgroundMusic)
     carStart.play()
