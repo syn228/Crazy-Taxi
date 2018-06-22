@@ -136,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function(event){
     buttonSound.play()
     fetch("http://localhost:3000/api/v1/games").then(r=>r.json()).then(findHighScores)
 
-    console.log(highScoreHeading.innerHTML)
     function findHighScores(gameObjs){
 
       const sortedObjs = gameObjs.sort(function(gameObj1, gameObj2) {return gameObj2.score-gameObj1.score})
@@ -326,9 +325,36 @@ document.addEventListener("DOMContentLoaded", function(event){
                  },
          body:JSON.stringify(body)
        }
-       fetch('http://localhost:3000/api/v1/games', config)
+
+       fetch('http://localhost:3000/api/v1/games', config).then(getUpdatedHighScores)
+
+         function getUpdatedHighScores() {
+           if (document.getElementById('high-score-heading')) {
+           fetch("http://localhost:3000/api/v1/games").then(r=>r.json()).then(findHighScores)
+
+           function findHighScores(gameObjs){
+
+
+             const sortedObjs = gameObjs.sort(function(gameObj1, gameObj2) {return gameObj2.score-gameObj1.score})
+             const top5Objs = sortedObjs.slice(0,5)
+
+             highScoreChart.style="border-style: solid; padding-left: 20px; padding-right: 20px; "
+             highScoreChart.innerHTML = ''
+             highScoreHeading.innerText = "High Scores:"
+             highScoreChart.appendChild(highScoreHeading)
+
+
+             for (i=0; i < top5Objs.length; i++){
+               const topScoreHTML = `<p style="text-align:center; color:magenta" id="li-${i+1}"> ${top5Objs[i].username}: ${top5Objs[i].score}</p>`
+               highScoreChart.innerHTML += topScoreHTML
+             }// end of for loop
+           }
+           }// end of if statement
+
+         } //end of getUpdatedHighScores
       }
-     }
+
+    } //end of gameover
 
      // console.log(obstacleCar1.style.top) // increasing by 1 each step
      // console.log(userCar.style.bottom) // always 50
@@ -346,9 +372,13 @@ document.addEventListener("DOMContentLoaded", function(event){
            roadDiv.appendChild(newRecordText)
            userScoreString.innerText = `User High Score: ${counter.innerText}`
         }
+        else {
+          finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+          roadDiv.appendChild(finalScore)
+        }
       }
        else {
-       finalScore.innerText = `Score: ${counter.innerText}`
+       finalScore.innerHTML = `Score: ${counter.innerText}<br>`
        roadDiv.appendChild(finalScore)
        currentUser.innerHTML +=
        `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
@@ -383,9 +413,13 @@ document.addEventListener("DOMContentLoaded", function(event){
            roadDiv.appendChild(newRecordText)
            userScoreString.innerText = `User High Score: ${counter.innerText}`
         }
+        else {
+          finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+          roadDiv.appendChild(finalScore)
+        }
       }
        else {
-       finalScore.innerText = `Score: ${counter.innerText}`
+       finalScore.innerHTML = `Score: ${counter.innerText}<br>`
        roadDiv.appendChild(finalScore)
        currentUser.innerHTML +=
        `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
@@ -419,9 +453,13 @@ document.addEventListener("DOMContentLoaded", function(event){
            roadDiv.appendChild(newRecordText)
            userScoreString.innerText = `User High Score: ${counter.innerText}`
         }
+        else {
+          finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+          roadDiv.appendChild(finalScore)
+        }
       }
        else {
-       finalScore.innerText = `Score: ${counter.innerText}`
+       finalScore.innerHTML = `Score: ${counter.innerText}<br>`
        roadDiv.appendChild(finalScore)
        currentUser.innerHTML +=
        `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
@@ -455,9 +493,13 @@ document.addEventListener("DOMContentLoaded", function(event){
            roadDiv.appendChild(newRecordText)
            userScoreString.innerText = `User High Score: ${counter.innerText}`
         }
+        else {
+          finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+          roadDiv.appendChild(finalScore)
+        }
       }
        else {
-       finalScore.innerText = `Score: ${counter.innerText}`
+       finalScore.innerHTML = `Score: ${counter.innerText}<br>`
        roadDiv.appendChild(finalScore)
        currentUser.innerHTML +=
        `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
