@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function(event){
   const finalScore = document.createElement("h1")
   finalScore.style= "color: black; position:absolute; z-index:0; left:80px; top:250px"
   const newRecordText = document.createElement("span")
-  newRecordText.style= "color: cyan; position:absolute; z-index:0; left:65px; top:330px"
+  newRecordText.style= "color: cyan; position:absolute; z-index:0; left:65px; top:320px"
   const gameBackgroundMusic = document.createElement("audio")
   gameBackgroundMusic.volume = .3
   gameBackgroundMusic.src = "./assets/backgroundMusic.mp3"
@@ -162,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 // THE ENTIRE GAME  STARTS HERE
   playButton.addEventListener("click", function moveDown() {
+    newRecordText.innerText = ""
     buttonSound.play()
     document.body.appendChild(gameBackgroundMusic)
     carStart.play()
@@ -330,19 +331,24 @@ document.addEventListener("DOMContentLoaded", function(event){
      // console.log(userCar.style.bottom) // always 50
      if ((userCarTop < (obstacleCar1Top + 120)) && ((userCarTop + 120) > obstacleCar1Top) && ((userCarLeft+3)===obstacleCar1Left)) {
        roadDiv.appendChild(gameover)
-       const userScoreString = document.getElementById(`${userInput.value}-score`)
-       const splitTag = userScoreString.innerText.split(":")
-       const userScore = parseInt(splitTag[1])
-       if (counter.innerText > userScore){
-         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
-         newRecordText.innerText = "NEW PERSONAL RECORD"
-         roadDiv.appendChild(finalScore)
-         roadDiv.appendChild(newRecordText)
-         // userScoreString.innerText = `User High Score: ${userScore}`
-       }
+       if (document.getElementById(`${userInput.value}-score`)) {
+         const userScoreString = document.getElementById(`${userInput.value}-score`)
+         const splitTag = userScoreString.innerText.split(":")
+         const userScore = parseInt(splitTag[1])
+
+         if (counter.innerText > userScore){
+           finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+           newRecordText.innerText = "NEW PERSONAL RECORD"
+           roadDiv.appendChild(finalScore)
+           roadDiv.appendChild(newRecordText)
+           userScoreString.innerText = `User High Score: ${counter.innerText}`
+        }
+      }
        else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       currentUser.innerHTML +=
+       `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
        }
        gameOver();
        userCar.src = `./assets/explosion.gif`
@@ -362,19 +368,24 @@ document.addEventListener("DOMContentLoaded", function(event){
      }
      if ((userCarTop < (obstacleCar2Top + 110)) && ((userCarTop + 110) > obstacleCar2Top) && ((userCarLeft+3)===obstacleCar2Left)) {
        roadDiv.appendChild(gameover)
-       const userScoreString = document.getElementById(`${userInput.value}-score`)
-       const splitTag = userScoreString.innerText.split(":")
-       const userScore = parseInt(splitTag[1])
-       if (counter.innerText > userScore){
-         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
-         newRecordText.innerText = "NEW PERSONAL RECORD"
-         roadDiv.appendChild(finalScore)
-         roadDiv.appendChild(newRecordText)
-         // userScoreString.innerText = `User High Score: ${userScore}`
-       }
+       if (document.getElementById(`${userInput.value}-score`)) {
+         const userScoreString = document.getElementById(`${userInput.value}-score`)
+         const splitTag = userScoreString.innerText.split(":")
+         const userScore = parseInt(splitTag[1])
+
+         if (counter.innerText > userScore){
+           finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+           newRecordText.innerText = "NEW PERSONAL RECORD"
+           roadDiv.appendChild(finalScore)
+           roadDiv.appendChild(newRecordText)
+           userScoreString.innerText = `User High Score: ${counter.innerText}`
+        }
+      }
        else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       currentUser.innerHTML +=
+       `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
        }
        gameOver();
        userCar.src = `./assets/explosion.gif`
@@ -393,19 +404,24 @@ document.addEventListener("DOMContentLoaded", function(event){
      }
      if ((userCarTop < (obstacleCar3Top + 110)) && ((userCarTop + 110) > obstacleCar3Top) && ((userCarLeft+3)===obstacleCar3Left)) {
        roadDiv.appendChild(gameover)
-       const userScoreString = document.getElementById(`${userInput.value}-score`)
-       const splitTag = userScoreString.innerText.split(":")
-       const userScore = parseInt(splitTag[1])
-       if (counter.innerText > userScore){
-         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
-         newRecordText.innerText = "NEW PERSONAL RECORD"
-         roadDiv.appendChild(finalScore)
-         roadDiv.appendChild(newRecordText)
-         // userScoreString.innerText = `User High Score: ${userScore}`
-       }
+       if (document.getElementById(`${userInput.value}-score`)) {
+         const userScoreString = document.getElementById(`${userInput.value}-score`)
+         const splitTag = userScoreString.innerText.split(":")
+         const userScore = parseInt(splitTag[1])
+
+         if (counter.innerText > userScore){
+           finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+           newRecordText.innerText = "NEW PERSONAL RECORD"
+           roadDiv.appendChild(finalScore)
+           roadDiv.appendChild(newRecordText)
+           userScoreString.innerText = `User High Score: ${counter.innerText}`
+        }
+      }
        else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       currentUser.innerHTML +=
+       `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
        }
        gameOver();
        userCar.src = `./assets/explosion.gif`
@@ -424,19 +440,24 @@ document.addEventListener("DOMContentLoaded", function(event){
      }
      if ((userCarTop < (obstacleCar4Top + 110)) && ((userCarTop + 110) > obstacleCar4Top) && ((userCarLeft+3)===obstacleCar4Left)) {
        roadDiv.appendChild(gameover)
-       const userScoreString = document.getElementById(`${userInput.value}-score`)
-       const splitTag = userScoreString.innerText.split(":")
-       const userScore = parseInt(splitTag[1])
-       if (counter.innerText > userScore){
-         finalScore.innerHTML = `Score: ${counter.innerText}<br>`
-         newRecordText.innerText = "NEW PERSONAL RECORD"
-         roadDiv.appendChild(finalScore)
-         roadDiv.appendChild(newRecordText)
-         // userScoreString.innerText = `User High Score: ${userScore}`
-       }
+       if (document.getElementById(`${userInput.value}-score`)) {
+         const userScoreString = document.getElementById(`${userInput.value}-score`)
+         const splitTag = userScoreString.innerText.split(":")
+         const userScore = parseInt(splitTag[1])
+
+         if (counter.innerText > userScore){
+           finalScore.innerHTML = `Score: ${counter.innerText}<br>`
+           newRecordText.innerText = "NEW PERSONAL RECORD"
+           roadDiv.appendChild(finalScore)
+           roadDiv.appendChild(newRecordText)
+           userScoreString.innerText = `User High Score: ${counter.innerText}`
+        }
+      }
        else {
        finalScore.innerText = `Score: ${counter.innerText}`
        roadDiv.appendChild(finalScore)
+       currentUser.innerHTML +=
+       `<strong><p id="${userInput.value}-score"> User High Score: ${counter.innerText}</p></strong>`
        }
        gameOver();
        userCar.src = `./assets/explosion.gif`
